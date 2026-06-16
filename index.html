@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -310,47 +311,58 @@ TODAY.setHours(0,0,0,0);
 
 const tasks = [
   // JS Phase
-  { id:1,  date:'2026-06-17', title:'Modern JS concepts — remaining', phase:'JS Foundations' },
-  { id:2,  date:'2026-06-17', title:'Prototypes & Class', phase:'JS Foundations' },
-  { id:3,  date:'2026-06-18', title:'Promises & Array Methods', phase:'JS Foundations' },
-  { id:4,  date:'2026-06-19', title:'Assignments', phase:'JS Foundations', assign:true },
+  { id:1,  date:'2026-06-17', title:'Modern JS Concepts (Remaining)', phase:'JS Foundations' },
+  { id:2,  date:'2026-06-17', title:'Prototypes & Classes', phase:'JS Foundations' },
+  { id:3,  date:'2026-06-18', title:'Promises', phase:'JS Foundations' },
+  { id:4,  date:'2026-06-18', title:'Array Methods', phase:'JS Foundations' },
+  { id:5,  date:'2026-06-19', title:'Assignments', phase:'JS Foundations', assign:true },
 
   // CSS Phase
-  { id:5,  date:'2026-06-20', title:'CSS Flexbox', phase:'CSS' },
-  { id:6,  date:'2026-06-20', title:'CSS Media Queries', phase:'CSS' },
-  { id:7,  date:'2026-06-23', title:'Assignments', phase:'CSS', assign:true },
+  { id:6,  date:'2026-06-20', title:'CSS Flexbox', phase:'CSS' },
+  { id:7,  date:'2026-06-21', title:'CSS Flexbox (Continuation)', phase:'CSS' },
+  { id:8,  date:'2026-06-22', title:'CSS Media Queries', phase:'CSS' },
+  { id:9,  date:'2026-06-23', title:'Assignments', phase:'CSS', assign:true },
 
   // Cycle 5
-  { id:8,  date:'2026-06-24', title:'CSS Fundamentals', phase:'Cycle 5', cycle:true },
-  { id:9,  date:'2026-06-26', title:'Linux', phase:'Cycle 5', cycle:true },
-  { id:10, date:'2026-06-26', title:'Git', phase:'Cycle 5', cycle:true },
+  { id:10, date:'2026-06-24', title:'CSS Fundamentals', phase:'Cycle 5', cycle:true },
+  { id:11, date:'2026-06-25', title:'CSS Fundamentals (Continuation)', phase:'Cycle 5', cycle:true },
+  { id:12, date:'2026-06-26', title:'Linux', phase:'Cycle 5', cycle:true },
+  { id:13, date:'2026-06-26', title:'Git', phase:'Cycle 5', cycle:true },
 
   // Node JS Phase
-  { id:11, date:'2026-06-27', title:'MERN & CCBP IDE overview', phase:'Node JS' },
-  { id:12, date:'2026-06-27', title:'Introduction to Node JS', phase:'Node JS' },
-  { id:13, date:'2026-06-28', title:'Introduction to Express JS', phase:'Node JS' },
-  { id:14, date:'2026-06-30', title:'REST APIs', phase:'Node JS' },
-  { id:15, date:'2026-06-30', title:'Authentication (Part 1/2)', phase:'Node JS' },
-  { id:16, date:'2026-07-01', title:'Authentication — remaining', phase:'Node JS' },
-  { id:17, date:'2026-07-01', title:'Assignments', phase:'Node JS', assign:true },
+  { id:14, date:'2026-06-27', title:'MERN & IDE Setup', phase:'Node JS' },
+  { id:15, date:'2026-06-27', title:'Introduction to Node.js', phase:'Node JS' },
+  { id:16, date:'2026-06-28', title:'Introduction to Express.js', phase:'Node JS' },
+  { id:17, date:'2026-06-29', title:'Introduction to Express.js (Continuation)', phase:'Node JS' },
+  { id:18, date:'2026-06-30', title:'REST APIs', phase:'Node JS' },
+  { id:19, date:'2026-06-30', title:'Authentication (Part 1)', phase:'Node JS' },
+  { id:20, date:'2026-07-01', title:'Authentication (Remaining)', phase:'Node JS' },
+  { id:21, date:'2026-07-01', title:'Assignments', phase:'Node JS', assign:true },
 
   // React Phase
-  { id:18, date:'2026-07-02', title:'Introduction to React JS', phase:'React JS' },
-  { id:19, date:'2026-07-03', title:'Class Component & State — Part 1', phase:'React JS' },
-  { id:20, date:'2026-07-04', title:'Class Component & State — Part 2', phase:'React JS' },
-  { id:21, date:'2026-07-05', title:'Common Mistakes', phase:'React JS' },
-  { id:22, date:'2026-07-05', title:'Debugging', phase:'React JS' },
-  { id:23, date:'2026-07-06', title:'Working with Lists', phase:'React JS' },
-  { id:24, date:'2026-07-08', title:'Component Lifecycle', phase:'React JS' },
-  { id:25, date:'2026-07-10', title:'React Router', phase:'React JS' },
-  { id:26, date:'2026-07-13', title:'Authentication & Authorization', phase:'React JS' },
-  { id:27, date:'2026-07-15', title:'Authentication & Authorization — Part 2', phase:'React JS' },
-  { id:28, date:'2026-07-15', title:'More React Concepts', phase:'React JS' },
-  { id:29, date:'2026-07-17', title:'Third Party Packages', phase:'React JS' },
-  { id:30, date:'2026-07-18', title:'Jobby Application', phase:'React JS' },
-  { id:31, date:'2026-07-19', title:'React Context', phase:'React JS' },
-  { id:32, date:'2026-07-20', title:'Styled Components', phase:'React JS' },
-  { id:33, date:'2026-07-21', title:'Assignments', phase:'React JS', assign:true },
+  { id:22, date:'2026-07-01', title:'Introduction to React.js', phase:'React JS' },
+  { id:23, date:'2026-07-02', title:'Class Components & State – Part 1', phase:'React JS' },
+  { id:24, date:'2026-07-03', title:'Class Components & State – Part 2', phase:'React JS' },
+  { id:25, date:'2026-07-04', title:'Common Mistakes', phase:'React JS' },
+  { id:26, date:'2026-07-04', title:'Debugging', phase:'React JS' },
+  { id:27, date:'2026-07-05', title:'Working with Lists', phase:'React JS' },
+  { id:28, date:'2026-07-06', title:'Working with Lists (Continuation)', phase:'React JS' },
+  { id:29, date:'2026-07-07', title:'Working with Lists (Continuation)', phase:'React JS' },
+  { id:30, date:'2026-07-08', title:'Component Lifecycle', phase:'React JS' },
+  { id:31, date:'2026-07-09', title:'Component Lifecycle (Continuation)', phase:'React JS' },
+  { id:32, date:'2026-07-10', title:'React Router', phase:'React JS' },
+  { id:33, date:'2026-07-11', title:'React Router (Continuation)', phase:'React JS' },
+  { id:34, date:'2026-07-12', title:'React Router (Continuation)', phase:'React JS' },
+  { id:35, date:'2026-07-13', title:'Authentication & Authorization', phase:'React JS' },
+  { id:36, date:'2026-07-14', title:'Authentication & Authorization (Continuation)', phase:'React JS' },
+  { id:37, date:'2026-07-15', title:'Authentication & Authorization (Part 2)', phase:'React JS' },
+  { id:38, date:'2026-07-16', title:'More React Concepts', phase:'React JS' },
+  { id:39, date:'2026-07-17', title:'Third-Party Packages', phase:'React JS' },
+  { id:40, date:'2026-07-18', title:'Jobby Application', phase:'React JS' },
+  { id:41, date:'2026-07-19', title:'React Context', phase:'React JS' },
+  { id:42, date:'2026-07-20', title:'Styled Components', phase:'React JS' },
+  { id:43, date:'2026-07-21', title:'Assignments', phase:'React JS', assign:true },
+  { id:44, date:'2026-07-22', title:'Assignments (Continuation)', phase:'React JS', assign:true }
 ];
 
 // Persistence with fallback for sandboxed environments
@@ -371,7 +383,6 @@ function saveState() {
     tasks.forEach(t => { if(t.done) s[t.id] = true; });
     localStorage.setItem('study_todo', JSON.stringify(s));
   } catch(e) {
-    // Silently fail in sandboxed environments
     console.warn("Could not save progress (sandboxed)");
   }
 }
@@ -393,7 +404,9 @@ let currentFilter = 'all';
 function setFilter(f) {
   currentFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  if (window.event && window.event.target) {
+    window.event.target.classList.add('active');
+  }
   render();
 }
 
@@ -466,3 +479,4 @@ render();
 </script>
 </body>
 </html>
+
