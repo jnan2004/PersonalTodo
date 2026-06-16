@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Study Plan · Todo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0f;
+    --surface: #141417;
+    --card: #1a1a1f;
+    --border: #2a2a32;
+    --accent: #7c6dfa;
+    --accent2: #3ecfb2;
+    --warn: #f5a623;
+    --done: #3ecfb2;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  header {
+    max-width: 700px;
+    margin: 0 auto 36px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+
+  .header-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .stat strong {
+    color: var(--accent2);
+    font-size: 16px;
+    display: block;
+  }
+
+  main {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .phase-group {
+    margin-bottom: 32px;
+  }
+
+  .phase-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .phase-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .todo-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+
+  .todo-item:hover { border-color: var(--accent); }
+
+  .todo-item.done {
+    opacity: 0.45;
+    border-color: var(--border);
+    background: var(--surface);
+  }
+
+  .todo-item.done:hover { border-color: var(--done); opacity: 0.65; }
+
+  .todo-item.today { border-left: 3px solid var(--warn); }
+  .todo-item.overdue { border-left: 3px solid #e05555; }
+  .todo-item.done { border-left: 3px solid var(--done); }
+
+  .check {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .todo-item:hover .check { border-color: var(--accent); }
+  .todo-item.done .check { background: var(--done); border-color: var(--done); }
+
+  .check-mark {
+    display: none;
+    width: 10px;
+    height: 7px;
+    border-left: 2px solid #0d0d0f;
+    border-bottom: 2px solid #0d0d0f;
+    transform: rotate(-45deg) translate(1px, -1px);
+  }
+
+  .todo-item.done .check-mark { display: block; }
+
+  .todo-body { flex: 1; }
+
+  .todo-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    letter-spacing: 0.06em;
+  }
+
+  .todo-item.today .todo-date { color: var(--warn); }
+  .todo-item.overdue .todo-date { color: #e05555; }
+  .todo-item.done .todo-date { color: var(--muted); }
+
+  .todo-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .todo-item.done .todo-title {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .tag-today { background: rgba(245,166,35,0.15); color: var(--warn); }
+  .tag-overdue { background: rgba(224,85,85,0.15); color: #e05555; }
+  .tag-assign { background: rgba(124,109,250,0.12); color: var(--accent); }
+  .tag-cycle { background: rgba(62,207,178,0.12); color: var(--accent2); }
+
+  .progress-bar-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 28px;
+  }
+
+  .pb-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .pb-label span { color: var(--accent2); }
+
+  .pb-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .pb-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">// study tracker</div>
+  <h1>MERN Stack <span>Plan</span></h1>
+  <div class="subtitle">Personal roadmap · June–July 2026</div>
+  <div class="stats-row">
+    <div class="stat"><strong id="stat-done">0</strong>completed</div>
+    <div class="stat"><strong id="stat-left">0</strong>remaining</div>
+    <div class="stat"><strong id="stat-total">0</strong>total tasks</div>
+  </div>
+</header>
+
+<main>
+  <div class="progress-bar-wrap">
+    <div class="pb-label">Overall Progress <span id="pct">0%</span></div>
+    <div class="pb-track"><div class="pb-fill" id="pb-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('all')">All</button>
+    <button class="filter-btn" onclick="setFilter('pending')">Pending</button>
+    <button class="filter-btn" onclick="setFilter('done')">Done</button>
+    <button class="filter-btn" onclick="setFilter('today')">Today</button>
+    <button class="filter-btn" onclick="setFilter('overdue')">Overdue</button>
+  </div>
+
+  <div id="list"></div>
+</main>
+
+<script>
+const TODAY = new Date();
+TODAY.setHours(0,0,0,0);
+
+const tasks = [
+  // JS Phase
+  { id:1,  date:'2026-06-17', title:'Modern JS concepts — remaining', phase:'JS Foundations' },
+  { id:2,  date:'2026-06-17', title:'Prototypes & Class', phase:'JS Foundations' },
+  { id:3,  date:'2026-06-18', title:'Promises & Array Methods', phase:'JS Foundations' },
+  { id:4,  date:'2026-06-19', title:'Assignments', phase:'JS Foundations', assign:true },
+
+  // CSS Phase
+  { id:5,  date:'2026-06-20', title:'CSS Flexbox', phase:'CSS' },
+  { id:6,  date:'2026-06-20', title:'CSS Media Queries', phase:'CSS' },
+  { id:7,  date:'2026-06-23', title:'Assignments', phase:'CSS', assign:true },
+
+  // Cycle 5
+  { id:8,  date:'2026-06-24', title:'CSS Fundamentals', phase:'Cycle 5', cycle:true },
+  { id:9,  date:'2026-06-26', title:'Linux', phase:'Cycle 5', cycle:true },
+  { id:10, date:'2026-06-26', title:'Git', phase:'Cycle 5', cycle:true },
+
+  // Node JS Phase
+  { id:11, date:'2026-06-27', title:'MERN & CCBP IDE overview', phase:'Node JS' },
+  { id:12, date:'2026-06-27', title:'Introduction to Node JS', phase:'Node JS' },
+  { id:13, date:'2026-06-28', title:'Introduction to Express JS', phase:'Node JS' },
+  { id:14, date:'2026-06-30', title:'REST APIs', phase:'Node JS' },
+  { id:15, date:'2026-06-30', title:'Authentication (Part 1/2)', phase:'Node JS' },
+  { id:16, date:'2026-07-01', title:'Authentication — remaining', phase:'Node JS' },
+  { id:17, date:'2026-07-01', title:'Assignments', phase:'Node JS', assign:true },
+
+  // React Phase
+  { id:18, date:'2026-07-02', title:'Introduction to React JS', phase:'React JS' },
+  { id:19, date:'2026-07-03', title:'Class Component & State — Part 1', phase:'React JS' },
+  { id:20, date:'2026-07-04', title:'Class Component & State — Part 2', phase:'React JS' },
+  { id:21, date:'2026-07-05', title:'Common Mistakes', phase:'React JS' },
+  { id:22, date:'2026-07-05', title:'Debugging', phase:'React JS' },
+  { id:23, date:'2026-07-06', title:'Working with Lists', phase:'React JS' },
+  { id:24, date:'2026-07-08', title:'Component Lifecycle', phase:'React JS' },
+  { id:25, date:'2026-07-10', title:'React Router', phase:'React JS' },
+  { id:26, date:'2026-07-13', title:'Authentication & Authorization', phase:'React JS' },
+  { id:27, date:'2026-07-15', title:'Authentication & Authorization — Part 2', phase:'React JS' },
+  { id:28, date:'2026-07-15', title:'More React Concepts', phase:'React JS' },
+  { id:29, date:'2026-07-17', title:'Third Party Packages', phase:'React JS' },
+  { id:30, date:'2026-07-18', title:'Jobby Application', phase:'React JS' },
+  { id:31, date:'2026-07-19', title:'React Context', phase:'React JS' },
+  { id:32, date:'2026-07-20', title:'Styled Components', phase:'React JS' },
+  { id:33, date:'2026-07-21', title:'Assignments', phase:'React JS', assign:true },
+];
+
+// Persistence with fallback for sandboxed environments
+let savedState = {};
+try {
+  savedState = JSON.parse(localStorage.getItem('study_todo') || '{}');
+} catch(e) {
+  console.warn("localStorage not available (sandboxed environment)");
+}
+
+tasks.forEach(t => { 
+  if(savedState[t.id]) t.done = true; 
+});
+
+function saveState() {
+  try {
+    const s = {};
+    tasks.forEach(t => { if(t.done) s[t.id] = true; });
+    localStorage.setItem('study_todo', JSON.stringify(s));
+  } catch(e) {
+    // Silently fail in sandboxed environments
+    console.warn("Could not save progress (sandboxed)");
+  }
+}
+
+function getStatus(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  if (d < TODAY) return 'overdue';
+  if (d.getTime() === TODAY.getTime()) return 'today';
+  return 'upcoming';
+}
+
+function fmtDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short', year:'2-digit' });
+}
+
+let currentFilter = 'all';
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  render();
+}
+
+function toggle(id) {
+  const t = tasks.find(x => x.id === id);
+  if(t) { 
+    t.done = !t.done; 
+    saveState(); 
+    render(); 
+  }
+}
+
+function render() {
+  const phases = [...new Set(tasks.map(t => t.phase))];
+  let html = '';
+  let visible = 0;
+
+  phases.forEach(phase => {
+    const phaseTasks = tasks.filter(t => {
+      if(t.phase !== phase) return false;
+      const st = getStatus(t.date);
+      if(currentFilter === 'pending') return !t.done;
+      if(currentFilter === 'done') return t.done;
+      if(currentFilter === 'today') return st === 'today' && !t.done;
+      if(currentFilter === 'overdue') return st === 'overdue' && !t.done;
+      return true;
+    });
+    if(!phaseTasks.length) return;
+    visible += phaseTasks.length;
+
+    html += `<div class="phase-group"><div class="phase-label">${phase}</div>`;
+    phaseTasks.forEach(t => {
+      const st = t.done ? 'done' : getStatus(t.date);
+      let tagHtml = '';
+      if(!t.done && st === 'today') tagHtml += `<span class="tag tag-today">today</span>`;
+      if(!t.done && st === 'overdue') tagHtml += `<span class="tag tag-overdue">overdue</span>`;
+      if(t.assign) tagHtml += `<span class="tag tag-assign">assignment</span>`;
+      if(t.cycle) tagHtml += `<span class="tag tag-cycle">cycle 5</span>`;
+
+      html += `
+        <div class="todo-item ${st}" onclick="toggle(${t.id})">
+          <div class="check"><div class="check-mark"></div></div>
+          <div class="todo-body">
+            <div class="todo-date">${fmtDate(t.date)}</div>
+            <div class="todo-title">${t.title}${tagHtml}</div>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+
+  if(!visible) html = `<div class="empty-state">// no tasks match this filter</div>`;
+
+  document.getElementById('list').innerHTML = html;
+  updateStats();
+}
+
+function updateStats() {
+  const done = tasks.filter(t => t.done).length;
+  const total = tasks.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-left').textContent = total - done;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('pb-fill').style.width = pct + '%';
+}
+
+render();
+</script>
+</body>
+</html>
